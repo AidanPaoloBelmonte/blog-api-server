@@ -64,7 +64,24 @@ async function validateToken(id, username) {
   }
 }
 
+async function registerUser(username, hashedPassword, email) {
+  try {
+    await prisma.users.create({
+      data: {
+        username,
+        password: hashedPassword,
+        email,
+      },
+    });
+    return True;
+  } catch (err) {
+    console.log(err);
+    return False;
+  }
+}
+
 export default {
   validateLoginRequest,
   validateToken,
+  registerUser,
 };

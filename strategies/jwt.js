@@ -1,6 +1,6 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 
-import db from "../models/queries.js";
+import query from "../models/queries.js";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -9,7 +9,7 @@ const opts = {
 
 async function action(jwt_payload, done) {
   const { id, username } = jwt_payload;
-  const isTokenValid = await db.validateToken(id, username);
+  const isTokenValid = await query.validateToken(id, username);
 
   if (isTokenValid) {
     return done(null, true);
