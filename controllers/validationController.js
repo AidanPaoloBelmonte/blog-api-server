@@ -5,7 +5,8 @@ import queries from "../models/queries.js";
 const userDetailsValidations = [
   body("username")
     .escape()
-    .notEmpty.withMessage()
+    .notEmpty()
+    .withMessage()
     .isLength({ min: 3, max: 32 })
     .withMessage()
     .matches(/^\w+$/)

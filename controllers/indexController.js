@@ -3,7 +3,7 @@ async function get(req, res) {
 }
 
 async function getLost(req, res) {
-  return res.send("GET lost");
+  return res.status(404);
 }
 
 export default {
