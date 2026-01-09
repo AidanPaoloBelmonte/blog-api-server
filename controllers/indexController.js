@@ -3,7 +3,7 @@ async function get(req, res) {
 }
 
 async function getLost(req, res) {
-  return res.status(404);
+  return res.status(404).send("404 NOT FOUND");
 }
 
 export default {
