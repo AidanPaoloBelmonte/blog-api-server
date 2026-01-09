@@ -80,8 +80,54 @@ async function registerUser(username, hashedPassword, email) {
   }
 }
 
+async function getBlogPosts(skip = 0, take = 10, showUnpublished = true) {
+  const opts = {};
+
+  if (showUnpublished) opts.where.published = true;
+
+  const posts = await prisma.blogposts.findMany({ skip, take, opts });
+
+  return posts;
+}
+
+async function getBlogPost(id) {
+  const post = await prisma.blogposts.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return post;
+}
+
+async function getCommentsFromBlogPost(blogID, skip = 0, take = 10) {
+  const comments = await prisma.comments.findMany({
+    skip,
+    take,
+    where: {
+      blogID,
+    },
+  });
+
+  return comments;
+}
+
+async function getCommentsFromUser(authorID, skip = 0, take = 10) {
+  const comments = await prisma.comments.findMany({
+    skip,
+    take,
+    where: {
+      authorID,
+    },
+  });
+}
+
 export default {
   validateLoginRequest,
   validateToken,
   registerUser,
+  getBlogPosts,
+  getBlogPost,
+  getCommentsFromBlogPost,
+  getCommentsFromUser,
 };

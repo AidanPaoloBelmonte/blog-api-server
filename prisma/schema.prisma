@@ -14,10 +14,11 @@ datasource db {
 }
 
 model Blogposts {
-  id           Int      @id @default(autoincrement())
-  post         String   @db.VarChar(255)
-  creationDate DateTime @default(now())
-  published    Boolean  @default(false)
+  id           Int        @id @default(autoincrement())
+  post         String     @db.VarChar(255)
+  creationDate DateTime   @default(now())
+  published    Boolean    @default(false)
+  comments     Comments[]
 }
 
 model Users {
@@ -29,9 +30,11 @@ model Users {
 }
 
 model Comments {
-  id           Int      @id @default(autoincrement())
-  comment      String   @db.VarChar(512)
-  author       Users?   @relation(fields: [authorID], references: [id])
+  id           Int       @id @default(autoincrement())
+  comment      String    @db.VarChar(512)
+  author       Users?    @relation(fields: [authorID], references: [id])
   authorID     Int
-  creationDate DateTime @default(now())
+  blog         Blogposts @relation(fields: [blogID], references: [id])
+  blogID       Int
+  creationDate DateTime  @default(now())
 }
