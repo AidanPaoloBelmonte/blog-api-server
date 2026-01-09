@@ -2,14 +2,26 @@ import express from "express";
 import passport from "passport";
 import dotenv from "dotenv";
 
+import strategy from "./strategies/jwt.js";
 import indexRouter from "./routes/indexRouter.js";
 
 dotenv.config();
+
+passport.use(strategy);
 
 const app = express();
 
 // Allow access of form data in the request body
 app.use(express.urlencoded({ extended: true }));
+
+// Attach passport instance to allow subroutes to use it if they so need
+app.use((req, res, next) => {
+  req.context = {
+    passport,
+  };
+
+  next();
+});
 
 // Handle Routes
 app.use("/", indexRouter);
@@ -21,5 +33,5 @@ app.listen(PORT, (error) => {
     throw error;
   }
 
-  console.log(`Started Application. Listening on port ${PORT}`);
+  console.log(`Starting Application. Listening on port ${PORT}`);
 });

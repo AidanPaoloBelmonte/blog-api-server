@@ -11,6 +11,6 @@ indexRouter.get("/", idxCon.get);
 indexRouter.use("/signup", signupRouter);
 indexRouter.use("/login", loginRouter);
 
-// indexRouter.all("/{*lost}");
+indexRouter.all("/{*lost}", idxCon.getLost);
 
 export default indexRouter;
