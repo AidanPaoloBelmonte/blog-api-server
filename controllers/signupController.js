@@ -17,6 +17,8 @@ async function post(req, res) {
     if (!success) {
       throw new Error("There was a problem during registration.");
     }
+
+    res.status(201);
   } catch (err) {
     console.log(err);
 
