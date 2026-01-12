@@ -80,12 +80,16 @@ async function registerUser(username, hashedPassword, email) {
   }
 }
 
-async function getBlogPosts(skip = 0, take = 10, showUnpublished = true) {
-  const opts = {};
+async function getBlogPosts(skip = 0, take = 10, showUnpublished = false) {
+  const query = { skip, take };
 
-  if (showUnpublished) opts.where.published = true;
+  if (showUnpublished) {
+    query.where = {
+      published: true,
+    };
+  }
 
-  const posts = await prisma.blogpost.findMany({ skip, take, opts });
+  const posts = await prisma.blogpost.findMany(query);
 
   return posts;
 }
