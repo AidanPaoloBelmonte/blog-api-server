@@ -23,7 +23,7 @@ model User {
 
 model Comment {
   id           Int      @id @default(autoincrement())
-  blogComment  String   @db.VarChar(511)
+  content      String   @db.VarChar(511)
   author       User?    @relation(fields: [authorID], references: [id])
   authorID     Int?
   blog         Blogpost @relation(fields: [blogID], references: [id])
@@ -32,10 +32,17 @@ model Comment {
 }
 
 model Blogpost {
-  id           Int       @id @default(autoincrement())
-  title        String    @db.VarChar(255)
-  post         String    @db.VarChar(2047)
-  creationDate DateTime  @default(now())
-  published    Boolean   @default(false)
-  blogComments Comment[]
+  id           Int          @id @default(autoincrement())
+  title        String       @db.VarChar(255)
+  creationDate DateTime     @default(now())
+  published    Boolean      @default(false)
+  article      BlogArticle?
+  comments     Comment[]
+}
+
+model BlogArticle {
+  id         Int      @id @default(autoincrement())
+  content    String   @db.VarChar(2047)
+  blogpost   Blogpost @relation(fields: [blogpostId], references: [id])
+  blogpostId Int      @unique
 }
