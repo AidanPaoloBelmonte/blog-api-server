@@ -11,7 +11,7 @@ async function validateLoginRequest(username, password) {
   };
 
   try {
-    const user = await prisma.users.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         username: username,
       },
@@ -50,7 +50,7 @@ async function validateLoginRequest(username, password) {
 
 async function validateToken(id, username) {
   try {
-    const user = await prisma.users.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         id: id,
         username: username,
@@ -66,7 +66,7 @@ async function validateToken(id, username) {
 
 async function registerUser(username, hashedPassword, email) {
   try {
-    await prisma.users.create({
+    await prisma.user.create({
       data: {
         username,
         password: hashedPassword,
@@ -85,13 +85,13 @@ async function getBlogPosts(skip = 0, take = 10, showUnpublished = true) {
 
   if (showUnpublished) opts.where.published = true;
 
-  const posts = await prisma.blogposts.findMany({ skip, take, opts });
+  const posts = await prisma.blogpost.findMany({ skip, take, opts });
 
   return posts;
 }
 
 async function getBlogPost(id) {
-  const post = await prisma.blogposts.findUnique({
+  const post = await prisma.blogpost.findUnique({
     where: {
       id,
     },
@@ -101,7 +101,7 @@ async function getBlogPost(id) {
 }
 
 async function getCommentsFromBlogPost(blogID, skip = 0, take = 10) {
-  const comments = await prisma.comments.findMany({
+  const comments = await prisma.comment.findMany({
     skip,
     take,
     where: {
@@ -113,7 +113,7 @@ async function getCommentsFromBlogPost(blogID, skip = 0, take = 10) {
 }
 
 async function getCommentsFromUser(authorID, skip = 0, take = 10) {
-  const comments = await prisma.comments.findMany({
+  const comments = await prisma.comment.findMany({
     skip,
     take,
     where: {
