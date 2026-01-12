@@ -80,8 +80,20 @@ async function registerUser(username, hashedPassword, email) {
   }
 }
 
-async function getBlogPosts(skip = 0, take = 10, showUnpublished = false) {
+async function getBlogPosts(
+  skip = 0,
+  take = 10,
+  includeContents = false,
+  showUnpublished = false,
+) {
   const query = { skip, take };
+
+  if (includeContents) {
+    query.include = {
+      article: true,
+      comments: true,
+    };
+  }
 
   if (showUnpublished) {
     query.where = {

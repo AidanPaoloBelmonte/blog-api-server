@@ -1,10 +1,11 @@
 import db from "../models/queries.js";
 
 async function get(req, res) {
-  const skip = req?.query?.skip | 0;
-  const take = req?.query?.take | 10;
+  const skip = parseInt(req?.query?.skip) || 0;
+  const take = parseInt(req?.query?.take) || 10;
+  const { includeContents } = req.query;
 
-  const blogs = await db.getBlogPosts(skip, take);
+  const blogs = await db.getBlogPosts(skip, take, includeContents);
   return res.status(200).json({
     blogs,
   });
