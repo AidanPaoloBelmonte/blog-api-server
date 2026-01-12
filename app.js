@@ -12,6 +12,7 @@ passport.use(strategy);
 const app = express();
 
 // Allow access of form data in the request body
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Attach passport instance to allow subroutes to use it if they so need

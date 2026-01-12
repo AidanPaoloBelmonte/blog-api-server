@@ -17,7 +17,7 @@ async function post(req, res) {
 
   // Token Configuration
   const opts = { expiresIn: process.env?.TOKEN_DURATION | 86400 };
-  const secret = proces.env.TOKEN_SECRET;
+  const secret = process.env.TOKEN_SECRET;
   const token = jwt.sign({ id: userStatus.content.id, username }, secret, opts);
 
   return res.status(userStatus.code).json({

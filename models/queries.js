@@ -5,7 +5,7 @@ import { prisma } from "../lib/prisma.js";
 async function validateLoginRequest(username, password) {
   const result = {
     code: 400,
-    status: False,
+    status: false,
     msg: "An uknown error occursed.",
     content: {},
   };
@@ -34,7 +34,7 @@ async function validateLoginRequest(username, password) {
 
     result.code = 200;
     result.msg = "Success!";
-    result.status = True;
+    result.status = true;
     result.content = user;
 
     return result;
@@ -60,7 +60,7 @@ async function validateToken(id, username) {
     return !!user;
   } catch (err) {
     console.log(err);
-    return False;
+    return false;
   }
 }
 
@@ -73,10 +73,10 @@ async function registerUser(username, hashedPassword, email) {
         email,
       },
     });
-    return True;
+    return true;
   } catch (err) {
     console.log(err);
-    return False;
+    return false;
   }
 }
 
@@ -120,6 +120,8 @@ async function getCommentsFromUser(authorID, skip = 0, take = 10) {
       authorID,
     },
   });
+
+  return comments;
 }
 
 export default {
