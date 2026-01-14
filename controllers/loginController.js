@@ -12,7 +12,7 @@ async function post(req, res) {
   const userStatus = await query.validateLoginRequest(username, password);
 
   if (!userStatus.status) {
-    res.status(userStatus.code).json({ message: userStatus.status });
+    return res.status(userStatus.code).json({ message: userStatus.status });
   }
 
   // Token Configuration

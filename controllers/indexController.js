@@ -1,5 +1,5 @@
 async function get(req, res) {
-  return res.send("GET index");
+  return res.json({ message: "index GET" });
 }
 
 async function getLost(req, res) {

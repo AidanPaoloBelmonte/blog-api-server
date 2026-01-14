@@ -4,7 +4,7 @@ import { prisma } from "../lib/prisma.js";
 
 async function validateLoginRequest(username, password) {
   const result = {
-    code: 400,
+    code: 202,
     status: false,
     msg: "An uknown error occursed.",
     content: {},
