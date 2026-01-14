@@ -12,7 +12,7 @@ async function post(req, res) {
   const userStatus = await query.validateLoginRequest(username, password);
 
   if (!userStatus.status) {
-    return res.status(userStatus.code).json({ message: userStatus.status });
+    return res.status(202).json({ error: userStatus.msg });
   }
 
   // Token Configuration
@@ -20,7 +20,7 @@ async function post(req, res) {
   const secret = process.env.TOKEN_SECRET;
   const token = jwt.sign({ id: userStatus.content.id, username }, secret, opts);
 
-  return res.status(userStatus.code).json({
+  return res.status(200).json({
     message: userStatus.msg,
     token,
   });
