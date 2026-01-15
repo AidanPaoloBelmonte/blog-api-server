@@ -16,13 +16,26 @@ async function post(req, res) {
   }
 
   // Token Configuration
-  const opts = { expiresIn: process.env?.TOKEN_DURATION | 86400 };
+  const opts = {
+    expiresIn: process.env?.TOKEN_DURATION | (7 * 24 * 60 * 60 * 1000),
+  };
   const secret = process.env.TOKEN_SECRET;
   const token = jwt.sign({ id: userStatus.content.id, username }, secret, opts);
 
+  const payloadIndex = token.lastIndexOf(".");
+  const payload = token.slice(0, payloadIndex);
+  const signature = token.slice(payloadIndex + 1);
+
+  res.cookie("signature", signature, {
+    maxAge: opts.expiresIn,
+    secure: true,
+    httpOnly: true,
+    sameSite: "strict",
+  });
+
   return res.status(200).json({
     message: userStatus.msg,
-    token,
+    token: payload,
   });
 }
 

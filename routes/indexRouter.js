@@ -11,7 +11,7 @@ const indexRouter = Router();
 
 indexRouter.get("/", idxCon.get);
 indexRouter.use("/signup", signupRouter);
-indexRouter.use("/login", loginRouter);
+indexRouter.use("/login", cors(), loginRouter);
 indexRouter.use("/blogs", blogsRouter);
 
 indexRouter.all("/{*lost}", idxCon.getLost);
