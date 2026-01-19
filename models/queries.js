@@ -35,7 +35,7 @@ async function validateLoginRequest(username, password) {
     result.code = 200;
     result.msg = "Success!";
     result.status = true;
-    result.content = user;
+    result.content = { id: user.id, username: user.username };
 
     return result;
   } catch (err) {

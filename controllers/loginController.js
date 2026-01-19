@@ -35,6 +35,7 @@ async function post(req, res) {
 
   return res.status(200).json({
     message: userStatus.msg,
+    user: userStatus.content,
     token: payload,
   });
 }
