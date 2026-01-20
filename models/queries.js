@@ -111,6 +111,10 @@ async function getBlogPost(id) {
     where: {
       id,
     },
+    include: {
+      article: true,
+      comments: true,
+    },
   });
 
   return post;

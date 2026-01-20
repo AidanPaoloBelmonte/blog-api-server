@@ -11,6 +11,19 @@ async function get(req, res) {
   });
 }
 
+async function getBlogPost(req, res) {
+  const id = parseInt(req?.params?.id);
+
+  const blog = await db.getBlogPost(id);
+
+  if (!blog) {
+    return res.status(404).json({ error: "Not Found" });
+  }
+
+  return res.status(200).json({ blog });
+}
+
 export default {
   get,
+  getBlogPost,
 };
