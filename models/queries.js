@@ -113,7 +113,15 @@ async function getBlogPost(id) {
     },
     include: {
       article: true,
-      comments: true,
+      comments: {
+        include: {
+          author: {
+            omit: {
+              password: true,
+            },
+          },
+        },
+      },
     },
   });
 
