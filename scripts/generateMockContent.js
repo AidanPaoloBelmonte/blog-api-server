@@ -105,7 +105,7 @@ async function createMockContent() {
       },
     },
     {
-      title: "The Eurpoean Language",
+      title: "The European Language",
       published: true,
       article: {
         create: articles[2],
