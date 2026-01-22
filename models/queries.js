@@ -117,6 +117,7 @@ async function getBlogPost(id) {
         include: {
           author: {
             omit: {
+              email: true,
               password: true,
             },
           },
@@ -134,6 +135,14 @@ async function getCommentsFromBlogPost(blogID, skip = 0, take = 10) {
     take,
     where: {
       blogID,
+    },
+    include: {
+      author: {
+        omit: {
+          email: true,
+          password: true,
+        },
+      },
     },
   });
 
