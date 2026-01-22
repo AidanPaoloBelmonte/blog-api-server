@@ -48,7 +48,7 @@ async function validateLoginRequest(username, password) {
   }
 }
 
-async function validateToken(id, username) {
+async function getUserFromTokenPayload(id, username) {
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -57,7 +57,7 @@ async function validateToken(id, username) {
       },
     });
 
-    return !!user;
+    return user;
   } catch (err) {
     console.log(err);
     return false;
@@ -152,12 +152,25 @@ async function getCommentsFromUser(authorID, skip = 0, take = 10) {
   return comments;
 }
 
+async function postComment(authorID, blogID, content) {
+  const data = { blogID, content };
+  if (authorID) data.authorID = authorID;
+
+  try {
+    await prisma.comment.create({ data });
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 export default {
   validateLoginRequest,
-  validateToken,
+  getUserFromTokenPayload,
   registerUser,
   getBlogPosts,
   getBlogPost,
   getCommentsFromBlogPost,
   getCommentsFromUser,
+  postComment,
 };

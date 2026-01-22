@@ -1,5 +1,6 @@
 import express from "express";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 import strategy from "./strategies/jwt.js";
@@ -15,17 +16,24 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Attach passport instance to allow subroutes to use it if they so need
-app.use((req, res, next) => {
-  req.context = {
-    passport,
-  };
+// Parse Cookies for easy access by subroutes
+app.use(cookieParser());
 
-  next();
-});
+// Wrapper for authenticating and getting user from Web Token
+/// This allows continuation into subroutes regardless of authentication,
+/// and so each subroute becomes responsible for authentication based on the results provided here
+function authenticateUser(req, res, next) {
+  if (!req.cookies) next();
+
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    req.user = user;
+
+    next();
+  })(req, res, next);
+}
 
 // Handle Routes
-app.use("/", indexRouter);
+app.use("/", authenticateUser, indexRouter);
 
 // Start Server
 const PORT = process.env.PORT | 3000;

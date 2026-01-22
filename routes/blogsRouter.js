@@ -4,6 +4,8 @@ import blgCon from "../controllers/blogsController.js";
 
 const blogsRouter = Router();
 
+blogsRouter.get("/:id/comments", blgCon.getBlogPostComments);
+blogsRouter.post("/:id/comments", blgCon.postBlogPostComment);
 blogsRouter.get("/:id", blgCon.getBlogPost);
 blogsRouter.get("/", blgCon.get);
 
