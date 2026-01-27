@@ -24,9 +24,9 @@ model User {
 model Comment {
   id           Int      @id @default(autoincrement())
   content      String   @db.VarChar(511)
-  author       User?    @relation(fields: [authorID], references: [id])
+  author       User?    @relation(fields: [authorID], references: [id], onDelete: Cascade)
   authorID     Int?
-  blog         Blogpost @relation(fields: [blogID], references: [id])
+  blog         Blogpost @relation(fields: [blogID], references: [id], onDelete: Cascade)
   blogID       Int
   creationDate DateTime @default(now())
 }

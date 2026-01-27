@@ -64,6 +64,23 @@ async function getUserFromTokenPayload(id, username) {
   }
 }
 
+async function getUser(id) {
+  try {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      omit: {
+        password: true,
+      },
+    });
+
+    return user;
+  } catch (err) {
+    return null;
+  }
+}
+
 async function registerUser(username, hashedPassword, email) {
   try {
     await prisma.user.create({
@@ -75,9 +92,16 @@ async function registerUser(username, hashedPassword, email) {
     });
     return true;
   } catch (err) {
-    console.log(err);
     return false;
   }
+}
+
+async function deleteUser(id) {
+  await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
 }
 
 async function getBlogPosts(
@@ -129,6 +153,14 @@ async function getBlogPost(id) {
   return post;
 }
 
+async function deleteBlogPost(id) {
+  await prisma.blogpost.delete({
+    where: {
+      id,
+    },
+  });
+}
+
 async function getCommentsFromBlogPost(blogID, skip = 0, take = 10) {
   const comments = await prisma.comment.findMany({
     skip,
@@ -176,9 +208,12 @@ async function postComment(authorID, blogID, content) {
 export default {
   validateLoginRequest,
   getUserFromTokenPayload,
+  getUser,
   registerUser,
+  deleteUser,
   getBlogPosts,
   getBlogPost,
+  deleteBlogPost,
   getCommentsFromBlogPost,
   getCommentsFromUser,
   postComment,
