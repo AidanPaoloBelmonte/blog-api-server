@@ -188,6 +188,9 @@ async function getCommentsFromUser(authorID, skip = 0, take = 10) {
     where: {
       authorID,
     },
+    include: {
+      blog: true,
+    },
   });
 
   return comments;

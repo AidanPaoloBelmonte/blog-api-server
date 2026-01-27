@@ -7,15 +7,44 @@ async function get(req, res) {
 
   try {
     const { id } = req.params;
-    const user = await query.getUser(parseInt(id));
+    const includeComments = req?.query?.comments ?? false;
+    const user = await query.getUser(parseInt(id), includeComments);
 
-    if (user) {
-      return res.status(200).json({ user });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const comments = await query.getCommentsFromUser(parseInt(id));
+    if (comments) {
+      user.comments = comments;
+    }
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(500);
+  }
+}
+
+async function getComments(req, res) {
+  if (!req.params?.id) {
+    return res.status(400);
+  }
+
+  try {
+    const { id } = req.params;
+    if (id && parseInt(id) != req.user.id) {
+      return res.status(403).json({ error: "Request Denied" });
+    }
+
+    const comments = query.getCommentsFromUser(parseInt(id));
+
+    if (comments) {
+      return res.status(200).json({ comments });
     }
 
     return res.status(404).json({ error: "User not found" });
   } catch (err) {
-    return res.status(500);
+    return res.status(404).json({ error: err });
   }
 }
 
