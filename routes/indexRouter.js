@@ -1,5 +1,4 @@
 import { Router } from "express";
-import cors from "cors";
 
 import idxCon from "../controllers/indexController.js";
 import authCon from "../controllers/authenticationController.js";
@@ -11,17 +10,17 @@ import blogsRouter from "./blogsRouter.js";
 import userRouter from "./userRouter.js";
 
 const corsOpts = {
-  origin: ["https://localhost:5173"],
+  origin: "https://localhost:5173",
 };
 
 const indexRouter = Router();
 
 indexRouter.get("/", idxCon.get);
-indexRouter.use("/signup", cors(corsOpts), signupRouter);
-indexRouter.use("/login", cors(corsOpts), loginRouter);
-indexRouter.use("/blogs", cors(corsOpts), blogsRouter);
-indexRouter.use("/user", cors(corsOpts), userRouter);
-indexRouter.post("/logout", cors(corsOpts), authCon.user, lgtCon.post);
+indexRouter.use("/signup", signupRouter);
+indexRouter.use("/login", loginRouter);
+indexRouter.use("/blogs", blogsRouter);
+indexRouter.use("/user", userRouter);
+indexRouter.post("/logout", authCon.user, lgtCon.post);
 
 indexRouter.all("/{*lost}", idxCon.getLost);
 

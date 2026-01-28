@@ -2,5 +2,6 @@
 Basic API Server implementation using Express, Prisma and JTW.
 This is the backend of a 3-part application that aims to create a blogging website.
 
-Public Client: TBA
+Public Client: [Ready](https://github.com/AidanPaoloBelmonte/blog-api-client-user)
+
 Admin Client: TBA
