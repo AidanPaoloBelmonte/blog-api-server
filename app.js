@@ -34,12 +34,7 @@ function authenticateUser(req, res, next) {
 }
 
 // Handle Routes
-app.use(
-  cors({
-    origin: ["http://localhost:5137"],
-    credentials: true,
-  }),
-);
+app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
 app.use("/", authenticateUser, indexRouter);
 
 // Start Server

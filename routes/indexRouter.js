@@ -9,10 +9,6 @@ import loginRouter from "./loginRouter.js";
 import blogsRouter from "./blogsRouter.js";
 import userRouter from "./userRouter.js";
 
-const corsOpts = {
-  origin: "https://localhost:5173",
-};
-
 const indexRouter = Router();
 
 indexRouter.get("/", idxCon.get);
