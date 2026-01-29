@@ -15,6 +15,12 @@ async function post(req, res) {
     return res.status(202).json({ error: userStatus.msg });
   }
 
+  if (req?.requiresAdmin && !userStatus?.content?.isAdmin) {
+    return res
+      .status(202)
+      .json({ error: "This account does not have permitted privelages." });
+  }
+
   // Token Configuration
   const opts = {
     expiresIn: process.env?.TOKEN_DURATION | (7 * 24 * 60 * 60 * 1000),
@@ -35,7 +41,11 @@ async function post(req, res) {
 
   return res.status(200).json({
     message: userStatus.msg,
-    user: userStatus.content,
+    user: {
+      id: userStatus.content.id,
+      username,
+      email: userStatus.content.email,
+    },
     token: payload,
   });
 }

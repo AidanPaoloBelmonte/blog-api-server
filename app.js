@@ -23,7 +23,12 @@ app.use(cookieParser());
 // Wrapper for authenticating and getting user from Web Token
 /// This allows continuation into subroutes regardless of authentication,
 /// and so each subroute becomes responsible for authentication based on the results provided here
+const adminOrigins = process.env.ADMIN_ORIGINS.split(",");
 function authenticateUser(req, res, next) {
+  if (adminOrigins.includes(req.get("origin"))) {
+    req.requiresAdmin = true;
+  }
+
   if (!req.cookies) next();
 
   passport.authenticate("jwt", { session: false }, (err, user, info) => {
@@ -34,7 +39,8 @@ function authenticateUser(req, res, next) {
 }
 
 // Handle Routes
-app.use(cors({ origin: process.env.ORIGINS.split(","), credentials: true }));
+const origins = process.env.ORIGINS.split(",") + adminOrigins;
+app.use(cors({ origin: origins, credentials: true }));
 app.use("/", authenticateUser, indexRouter);
 
 // Start Server

@@ -25,6 +25,12 @@ async function createMockUsers() {
         password: await bcrypt.hash("050714pipo", 12),
         email: "sayaka@saru.zony.com",
       },
+      {
+        username: "Natalie",
+        password: await bcrypt.hash("saru5150SARU", 12),
+        email: "natsumi@saru.zony.com",
+        isAdmin: true,
+      },
     ],
     skipDuplicates: true,
   });
