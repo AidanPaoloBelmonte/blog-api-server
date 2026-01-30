@@ -157,6 +157,28 @@ async function getBlogPost(id) {
   return post;
 }
 
+async function postBlogPost(title, post, isPublished) {
+  try {
+    const newPost = await prisma.blogpost.create({
+      data: {
+        title,
+        published: isPublished,
+        article: {
+          create: { content: post },
+        },
+      },
+      include: {
+        article: true,
+      },
+    });
+
+    return newPost;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
 async function deleteBlogPost(id) {
   await prisma.blogpost.delete({
     where: {
@@ -220,6 +242,7 @@ export default {
   deleteUser,
   getBlogPosts,
   getBlogPost,
+  postBlogPost,
   deleteBlogPost,
   getCommentsFromBlogPost,
   getCommentsFromUser,

@@ -35,6 +35,19 @@ async function getBlogPostComments(req, res) {
   return res.status(200).json({ comments });
 }
 
+async function postBlogPost(req, res) {
+  const result = await query.postBlogPost(
+    req?.body?.title,
+    req?.body?.post,
+    req?.body?.isPublished,
+  );
+
+  if (!result)
+    return res.status(400).json({ error: "Failed to create blogpost" });
+
+  return res.status(200).json({ blog: result });
+}
+
 async function postBlogPostComment(req, res) {
   const result = await query.postComment(
     req?.user?.id,
@@ -51,5 +64,6 @@ export default {
   get,
   getBlogPost,
   getBlogPostComments,
+  postBlogPost,
   postBlogPostComment,
 };
