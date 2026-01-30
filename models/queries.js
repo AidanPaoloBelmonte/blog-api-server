@@ -123,7 +123,7 @@ async function getBlogPosts(
     };
   }
 
-  if (showUnpublished) {
+  if (!showUnpublished) {
     query.where = {
       published: true,
     };
@@ -179,12 +179,34 @@ async function postBlogPost(title, post, isPublished) {
   }
 }
 
+async function toggleIsPublished(id) {
+  try {
+    const post = await prisma.blogpost.findUnique({ where: { id } });
+    if (!post) throw new Error("Blogpost does not exist.");
+
+    const result = await prisma.blogpost.update({
+      where: { id },
+      data: { published: { set: !post.published } },
+    });
+
+    return result;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
 async function deleteBlogPost(id) {
-  await prisma.blogpost.delete({
-    where: {
-      id,
-    },
-  });
+  try {
+    await prisma.blogpost.delete({
+      where: { id },
+    });
+
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 }
 
 async function getCommentsFromBlogPost(blogID, skip = 0, take = 10) {
@@ -243,6 +265,7 @@ export default {
   getBlogPosts,
   getBlogPost,
   postBlogPost,
+  toggleIsPublished,
   deleteBlogPost,
   getCommentsFromBlogPost,
   getCommentsFromUser,

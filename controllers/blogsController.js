@@ -5,7 +5,12 @@ async function get(req, res) {
   const take = parseInt(req?.query?.take) || 10;
   const { includeContents } = req.query;
 
-  const blogs = await query.getBlogPosts(skip, take, includeContents);
+  const blogs = await query.getBlogPosts(
+    skip,
+    take,
+    includeContents,
+    req?.requiresAdmin ?? false,
+  );
   return res.status(200).json({
     blogs,
   });
@@ -60,10 +65,26 @@ async function postBlogPostComment(req, res) {
   return res.status(200).json({ message: "Success" });
 }
 
+async function postToggleIsPublished(req, res) {
+  const result = await query.toggleIsPublished(parseInt(req.params.id));
+
+  if (!result) return res.status(400);
+  return res.status(200).json({ published: result?.published });
+}
+
+async function deleteBlogPost(req, res) {
+  const result = await query.deleteBlogPost(parseInt(req.params.id));
+
+  if (!result) return res.status(400);
+  return res.status(200).json({ message: "Success" });
+}
+
 export default {
   get,
   getBlogPost,
   getBlogPostComments,
   postBlogPost,
+  postToggleIsPublished,
   postBlogPostComment,
+  deleteBlogPost,
 };
